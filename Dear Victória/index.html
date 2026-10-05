@@ -1,0 +1,930 @@
+<!doctype html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dear Victória</title>
+
+    <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj4KICA8dGV4dCB4PSI1MCUiIHk9IjU1JSIgZm9udC1mYW1pbHk9IkN1cnNpdmUsICdCcnVzaCBTY3JpcHQgTVQnLCAnQXBwbGUgQ2hhbmNlcnknLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjgwIiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0iI2ZmZmZmZiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZG9taW5hbnQtYmFzZWxpbmU9ImNlbnRyYWwiPlY8L3RleHQ+Cjwvc3ZnPg==">
+
+    <style>
+        :root {
+            --ink: #173a5e;
+            --navy: #0c2e50;
+            --sky: #bfe5f6;
+            --mist: #eaf8ff;
+            --rose: #ef859c;
+            --line: rgba(23, 58, 94, .13);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, "Segoe UI", sans-serif;
+            color: var(--ink);
+            overflow-x: hidden;
+            background: var(--sky);
+        }
+
+        .page {
+            min-height: 100vh;
+            position: relative;
+            background: linear-gradient(135deg, #bfe5f6, #eaf8ff 55%, #f8dfe7);
+            isolation: isolate;
+        }
+
+        .page:before,
+        .page:after {
+            content: "";
+            position: fixed;
+            border-radius: 50%;
+            z-index: -1;
+            pointer-events: none;
+            filter: blur(3px);
+        }
+
+        .page:before {
+            width: 31rem;
+            height: 31rem;
+            top: -13rem;
+            left: -12rem;
+            background: rgba(255, 255, 255, .58);
+        }
+
+        .page:after {
+            width: 27rem;
+            height: 27rem;
+            right: -12rem;
+            bottom: 8rem;
+            background: rgba(244, 174, 193, .27);
+        }
+
+        .container {
+            width: min(1152px, calc(100% - 48px));
+            margin: auto;
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, .72);
+            border: 1px solid rgba(255, 255, 255, .78);
+            box-shadow: 0 18px 55px rgba(29, 93, 131, .12);
+            backdrop-filter: blur(16px);
+        }
+
+        /* BOTÃO VOLTAR */
+
+        .back-button {
+            position: fixed;
+            top: 24px;
+            left: 24px;
+            z-index: 100;
+
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: rgba(255, 255, 255, .85);
+            color: var(--ink);
+            text-decoration: none;
+
+            font-size: 28px;
+            font-weight: bold;
+
+            box-shadow: 0 8px 20px rgba(22, 84, 125, .15);
+            transition: .25s;
+        }
+
+        .back-button:hover {
+            transform: translateX(-4px);
+            background: #fff;
+        }
+
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 30;
+            padding: 16px;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-radius: 18px;
+            padding: 14px 20px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: var(--ink);
+            font-family: Georgia, serif;
+            font-size: 21px;
+            font-weight: 600;
+        }
+
+        .heart {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            background: var(--rose);
+            color: white;
+            box-shadow: 0 10px 22px rgba(201, 72, 103, .22);
+            font-size: 19px;
+        }
+
+        .links {
+            display: flex;
+            gap: 28px;
+        }
+
+        .links a,
+        .mobile a {
+            color: #285677;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+        }
+
+        .links a:hover,
+        .mobile a:hover {
+            text-decoration: underline;
+            text-decoration-color: var(--rose);
+            text-decoration-thickness: 2px;
+            text-underline-offset: 6px;
+        }
+
+        .menu {
+            display: none;
+            border: 0;
+            background: none;
+            font-size: 24px;
+            color: var(--ink);
+            cursor: pointer;
+        }
+
+        .mobile {
+            display: none;
+            margin-top: 8px;
+            border-radius: 18px;
+            padding: 10px;
+        }
+
+        .mobile.open {
+            display: block;
+        }
+
+        .mobile a {
+            display: block;
+            padding: 11px;
+        }
+
+        .hero {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 48px;
+            align-items: center;
+            padding: 70px 0 100px;
+        }
+
+        .kicker {
+            color: #36739a;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: .2em;
+            text-transform: uppercase;
+        }
+
+        h1,
+        h2,
+        h3 {
+            font-family: Georgia, "Times New Roman", serif;
+            color: #103858;
+        }
+
+        h1 {
+            font-size: clamp(42px, 6vw, 72px);
+            line-height: 1.04;
+            margin: 14px 0 22px;
+        }
+
+        h2 {
+            font-size: clamp(34px, 5vw, 54px);
+            margin: 12px 0;
+        }
+
+        h3 {
+            margin: 0;
+        }
+
+        .hero p,
+        .section p {
+            line-height: 1.7;
+            color: #356584;
+        }
+
+        .hero-copy {
+            font-size: 18px;
+            max-width: 570px;
+        }
+
+        .button {
+            display: inline-flex;
+            gap: 8px;
+            align-items: center;
+            margin-top: 28px;
+            padding: 14px 24px;
+            border-radius: 999px;
+            background: var(--rose);
+            color: white;
+            text-decoration: none;
+            font-weight: 700;
+            box-shadow: 0 12px 25px rgba(201, 72, 103, .18);
+        }
+
+        .photo {
+            position: relative;
+            transform: rotate(2deg);
+            max-width: 450px;
+            margin: auto;
+        }
+
+        .photo-frame {
+            aspect-ratio: 4/5;
+            border-radius: 32px;
+            background: linear-gradient(145deg, #fff, #d7f0fa 55%, #f3b9ca);
+            box-shadow:
+                18px 18px 0 rgba(255, 255, 255, .55),
+                0 25px 55px rgba(22, 84, 125, .20);
+            display: grid;
+            place-items: center;
+            overflow: hidden;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .photo-frame span {
+            font-family: Georgia, serif;
+            font-size: 28px;
+            color: #285677;
+            text-align: center;
+            padding: 30px;
+        }
+
+        .photo .badge {
+            position: absolute;
+            right: -20px;
+            bottom: -28px;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            background: var(--rose);
+            color: #fff;
+            font-size: 30px;
+            box-shadow: 0 12px 25px rgba(201, 72, 103, .22);
+        }
+
+        .section {
+            padding: 48px 0 80px;
+        }
+
+        .section-box {
+            border-radius: 32px;
+            padding: 34px;
+            background: rgba(255, 255, 255, .55);
+            border: 1px solid rgba(255, 255, 255, .72);
+            box-shadow: 0 18px 55px rgba(29, 93, 131, .10);
+        }
+
+        .center {
+            text-align: center;
+            max-width: 700px;
+            margin: auto;
+        }
+
+        /* TEMPO */
+
+        .counter {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 12px;
+            margin-top: 34px;
+        }
+
+        .counter-card {
+            padding: 20px 10px;
+            text-align: center;
+            border: 1px solid rgba(46, 111, 149, .14);
+            background: rgba(255, 255, 255, .65);
+            border-radius: 18px;
+        }
+
+        .number {
+            font-family: Georgia, serif;
+            font-size: clamp(30px, 5vw, 58px);
+            line-height: 1;
+            font-weight: 600;
+            color: #143b61;
+        }
+
+        .label {
+            margin-top: 9px;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: .16em;
+            text-transform: uppercase;
+        }
+
+        /* POEMAS */
+
+        .poems-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 22px;
+            margin-top: 85px;
+        }
+
+        .poem {
+            padding: 28px;
+            border-radius: 22px;
+            background: rgba(255, 255, 255, .65);
+            border: 1px solid rgba(40, 100, 137, .14);
+            box-shadow: 0 15px 35px rgba(32, 86, 120, .10);
+            transition: .25s;
+        }
+
+        .poem:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, .90);
+        }
+
+        .poem-icon {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: transparent;
+            border-radius: 50%;
+            overflow: hidden;
+        }
+
+        .poem-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+            border-radius: 50%;
+        }
+
+        .poem h3 {
+            font-size: 24px;
+            margin: 22px 0 14px;
+        }
+
+        .poem p {
+            font-family: Georgia, serif;
+            font-size: 15px;
+            line-height: 1.8;
+            color: #4d7188;
+            white-space: pre-line;
+        }
+
+        /* MÚSICAS */
+
+        .music-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-top: 35px;
+        }
+
+        .music {
+            padding: 20px;
+            border-radius: 18px;
+            border: 1px solid rgba(40, 100, 137, .14);
+            background: rgba(255, 255, 255, .62);
+            transition: .25s;
+        }
+
+        .music:hover {
+            transform: translateY(-4px);
+            background: rgba(255, 255, 255, .92);
+        }
+
+        .music-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            background: var(--rose);
+            color: #fff;
+        }
+
+        .music h3 {
+            font-size: 25px;
+            margin-top: 25px;
+        }
+
+        .music p {
+            font-size: 14px;
+        }
+
+        .music a {
+            color: #285677;
+            font-weight: 700;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        audio {
+            width: 100%;
+            margin-top: 14px;
+        }
+
+        footer {
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, .55);
+            padding: 38px 20px;
+            color: #285677;
+            font-family: Georgia, serif;
+            font-size: 21px;
+        }
+
+        @media(max-width:800px) {
+
+            .container {
+                width: min(100% - 32px, 1152px);
+            }
+
+            .hero {
+                grid-template-columns: 1fr;
+                padding: 45px 0 70px;
+            }
+
+            .photo {
+                order: -1;
+                width: min(100%, 420px);
+            }
+
+            .links {
+                display: none;
+            }
+
+            .menu {
+                display: block;
+            }
+
+            .counter {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .poems-grid,
+            .music-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media(max-width:520px) {
+
+            .poems-grid,
+            .music-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section-box {
+                padding: 24px 16px;
+            }
+
+            .hero {
+                gap: 30px;
+            }
+
+            .back-button {
+                width: 42px;
+                height: 42px;
+                top: 16px;
+                left: 16px;
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="page">
+
+        <header>
+            <nav class="glass container">
+
+                <a class="brand" href="index.html">
+                    <span class="heart">♥</span>
+                    Nosso Amor
+                </a>
+
+                <div class="links">
+                    <a href="index.html">Início</a>
+                    <a href="#tempo">Nosso tempo</a>
+                    <a href="#poemas">Poemas</a>
+                    <a href="#musicas">Músicas</a>
+                </div>
+
+                <button class="menu" id="menu" aria-label="Abrir menu">
+                    ☰
+                </button>
+
+            </nav>
+
+            <div class="mobile glass container" id="mobile">
+                <a href="index.html">Início</a>
+                <a href="#tempo">Nosso tempo</a>
+                <a href="#poemas">Poemas</a>
+                <a href="#musicas">Músicas</a>
+            </div>
+        </header>
+
+
+        <main>
+
+            <!-- INÍCIO -->
+
+            <section id="inicio" class="hero container">
+
+                <div>
+
+                    <div class="kicker">
+                        Uma história para guardar
+                    </div>
+
+                    <h1>
+                        Nosso amor,<br>
+                        nossa história.
+                    </h1>
+
+                    <p class="hero-copy">
+                        Um cantinho especial para guardar momentos,
+                        lembranças e músicas que fazem parte da nossa história.
+                    </p>
+
+                    <a class="button" href="memorias.html">
+                        ♥ Ver nossas memórias
+                    </a>
+
+                </div>
+
+
+                <!-- FOTO -->
+
+                <div class="photo">
+
+                    <div class="photo-frame">
+                        <span>
+                            Clique no coração para ver nossa foto ❤️💕
+                        </span>
+                    </div>
+
+                    <button class="badge"
+                        onclick="mostrarFoto(this)"
+                        aria-label="Mostrar nossa foto"
+                        style="border:none;cursor:pointer;font-family:inherit;">
+                        ♥
+                    </button>
+
+                </div>
+
+            </section>
+
+
+            <!-- SCRIPT DA FOTO -->
+
+            <script>
+
+                function mostrarFoto(botao) {
+
+                    const moldura = botao.previousElementSibling;
+                    const texto = moldura.querySelector('span');
+                    const urlFoto = 'FOTO.jpg';
+
+                    if (
+                        !moldura.style.backgroundImage ||
+                        moldura.style.backgroundImage === 'none'
+                    ) {
+
+                        texto.style.visibility = 'hidden';
+
+                        moldura.style.backgroundImage =
+                            `url("${urlFoto}")`;
+
+                    } else {
+
+                        moldura.style.backgroundImage = 'none';
+                        texto.style.visibility = 'visible';
+
+                    }
+                }
+
+            </script>
+
+
+            <!-- NOSSO TEMPO -->
+
+            <section id="tempo" class="section container">
+
+                <div class="section-box">
+
+                    <div class="center">
+
+                        <div class="kicker">
+                            O tempo passa, a lembrança fica
+                        </div>
+
+                        <h2>Nosso tempo</h2>
+
+                        <p>
+                            Contando cada segundo desde 22 de agosto de 2025.
+                        </p>
+
+                    </div>
+
+
+                    <div class="counter">
+
+                        <div class="counter-card">
+                            <div id="years" class="number">0</div>
+                            <div class="label">Anos</div>
+                        </div>
+
+                        <div class="counter-card">
+                            <div id="months" class="number">0</div>
+                            <div class="label">Meses</div>
+                        </div>
+
+                        <div class="counter-card">
+                            <div id="days" class="number">0</div>
+                            <div class="label">Dias</div>
+                        </div>
+
+                        <div class="counter-card">
+                            <div id="hours" class="number">00</div>
+                            <div class="label">Horas</div>
+                        </div>
+
+                        <div class="counter-card">
+                            <div id="minutes" class="number">00</div>
+                            <div class="label">Minutos</div>
+                        </div>
+
+                        <div class="counter-card">
+                            <div id="seconds" class="number">00</div>
+                            <div class="label">Segundos</div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- POEMAS -->
+
+            <section id="poemas" class="section container">
+
+                <div class="section-box">
+
+                    <div class="center">
+
+                        <div class="kicker">
+                            Palavras que ficam
+                        </div>
+
+                        <h2>Poemas</h2>
+
+                        <p>
+                            Algumas palavras escritas para guardar
+                            sentimentos especiais. ♡
+                        </p>
+
+                    </div>
+
+
+                    <div class="poems-grid">
+
+
+                        <!-- POEMA 1 -->
+
+                        <article class="poem">
+
+                            <div class="poem-icon">
+                                <img src="v.jpg" alt="Coração decorativo">
+                            </div>
+
+                            <h3>Para você</h3>
+
+                            <p>
+                                Hoje faz um ano de nós,<br>
+                                e meu coração ainda sorri.<br>
+                                Entre tantos momentos,<br>
+                                sou feliz por ter você aqui. ♡
+                            </p>
+
+                        </article>
+
+
+                        <!-- POEMA 2 -->
+
+                        <article class="poem">
+
+                            <div class="poem-icon">
+                                <img src="v.jpg" alt="Coração decorativo">
+                            </div>
+
+                            <h3>Nosso amor</h3>
+
+                            <p>
+                                Um ano de nós dois,<br>
+                                de carinho, risadas e amor.<br>
+                                Cada momento ao seu lado<br>
+                                deixa minha vida mais bonita. ♡
+                            </p>
+
+                        </article>
+
+
+                        <!-- POEMA 3 -->
+
+                        <article class="poem">
+
+                            <div class="poem-icon">
+                                <img src="v.jpg" alt="Coração decorativo">
+                            </div>
+
+                            <h3>Uma lembrança</h3>
+
+                            <p>
+                                Se eu pudesse voltar no tempo,<br>
+                                escolheria você outra vez.<br>
+                                Porque cada momento contigo<br>
+                                se tornou inesquecível para mim. ♡
+                            </p>
+
+                        </article>
+
+
+                        <!-- POEMA 4 -->
+
+                        <article class="poem">
+
+                            <div class="poem-icon">
+                                <img src="v.jpg" alt="Coração decorativo">
+                            </div>
+
+                            <h3>Um ano de nós</h3>
+
+                            <p>
+                                365 dias ao seu lado,<br>
+                                e ainda quero muitos mais.<br>
+                                Que esse primeiro ano<br>
+                                seja só o começo da nossa história. ♡
+                            </p>
+
+                        </article>
+
+
+                        <!-- POEMA 5 -->
+
+                        <article class="poem">
+
+                            <div class="poem-icon">
+                                <img src="v.jpg" alt="Coração decorativo">
+                            </div>
+
+                            <h3>Para sempre</h3>
+
+                            <p>
+                                Não sei o que o futuro espera,<br>
+                                mas sei o que desejo viver:<br>
+                                muitos outros anos ao seu lado,<br>
+                                criando histórias com você. ♡
+                            </p>
+
+                        </article>
+
+
+                        <!-- POEMA 6 -->
+
+                        <article class="poem">
+
+                            <div class="poem-icon">
+                                <img src="v.jpg" alt="Coração decorativo">
+                            </div>
+
+                            <h3>Nosso cantinho</h3>
+
+                            <p>
+                                Hoje nosso amor completa um ano,<br>
+                                e eu só consigo agradecer.<br>
+                                Por cada sorriso e cada momento,<br>
+                                por ter você para amar e viver. ♡
+                            </p>
+
+                        </article>
+
+
+                    </div>
+
+                </div>
+
+            </section>
+
+  <section id="musicas" class="section container">
+                <div class="section-box">
+                    <div class="kicker">Trilha sonora</div>
+                    <h2>Músicas</h2>
+                    <p>Coloque aqui as músicas que lembram vocês.</p>
+                    <div class="music-grid">
+                        <article class="music">
+                            <div class="music-icon">♫</div>
+                            <h3>Those Eyes</h3>
+                            <p>Those Eyes</p><audio controls preload="metadata" style="width:100%;margin-top:14px">
+                                <source src="those-eyes.m4a" type="audio/mp4">Seu navegador não suporta áudio.
+                            </audio>
+                        </article>
+                        <article class="music">
+                            <div class="music-icon">♫</div>
+                            <h3>Amor sem Medidas</h3>
+                            <p>Amor sem Medidas</p><audio controls preload="metadata"
+                                style="width:100%;margin-top:14px">
+                                <source src="amor-sem-medidas.m4a" type="audio/mp4">Seu navegador não suporta áudio.
+                            </audio>
+                        </article>
+                        <article class="music">
+                            <div class="music-icon">♫</div>
+                            <h3>Você é o melhor pra mim</h3>
+                            <p>Você é o melhor pra mim</p><audio controls preload="metadata"
+                                style="width:100%;margin-top:14px">
+                                <source src="voce-e-o-melhor-pra-mim.m4a" type="audio/mp4">Seu navegador não suporta
+                                áudio.
+                            </audio>
+                        </article>
+                        
+                    </div>
+                </div>
+            </section>
+        </main>
+        <footer>♥ Feito para guardar uma história especial ♥</footer>
+    </div>
+    <script>
+        const menu = document.getElementById('menu'), mobile = document.getElementById('mobile');
+        menu.addEventListener('click', () => mobile.classList.toggle('open'));
+        mobile.querySelectorAll('a').forEach(a => a.addEventListener('click', () => mobile.classList.remove('open')));
+        const startDate = new Date(2025, 7, 22, 0, 0, 0);
+        function updateCounter() {
+            const now = new Date(); let cursor = new Date(startDate);
+            let years = now.getFullYear() - cursor.getFullYear();
+            let anniversary = new Date(cursor); anniversary.setFullYear(cursor.getFullYear() + years);
+            if (anniversary > now) years--;
+            cursor.setFullYear(cursor.getFullYear() + years);
+            let months = (now.getFullYear() - cursor.getFullYear()) * 12 + now.getMonth() - cursor.getMonth();
+            let monthMark = new Date(cursor); monthMark.setMonth(cursor.getMonth() + months);
+            if (monthMark > now) months--;
+            cursor.setMonth(cursor.getMonth() + months);
+            let remainder = Math.max(0, now - cursor);
+            const days = Math.floor(remainder / 86400000); remainder -= days * 86400000;
+            const hours = Math.floor(remainder / 3600000); remainder -= hours * 3600000;
+            const minutes = Math.floor(remainder / 60000); remainder -= minutes * 60000;
+            const seconds = Math.floor(remainder / 1000);
+            yearsEl.textContent = years; monthsEl.textContent = months; daysEl.textContent = days;
+            hoursEl.textContent = String(hours).padStart(2, '0'); minutesEl.textContent = String(minutes).padStart(2, '0'); secondsEl.textContent = String(seconds).padStart(2, '0');
+        }
+        const yearsEl = document.getElementById('years'), monthsEl = document.getElementById('months'), daysEl = document.getElementById('days'), hoursEl = document.getElementById('hours'), minutesEl = document.getElementById('minutes'), secondsEl = document.getElementById('seconds');
+        updateCounter(); setInterval(updateCounter, 1000);
+        
+    </script>
+</body>
+
+</html>
